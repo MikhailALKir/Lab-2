@@ -1,3 +1,6 @@
+import csv
+
+
 def esc(code):
     return f'\u001b[{code}m'
 
@@ -96,3 +99,34 @@ step = round(abs((result[9] - result[0])) / 9, 1)
 array_init(array_plot, step)
 array_fill(array_plot, result, step)
 print_plot(array_plot)
+
+file = open('books.csv', 'r')
+total_count = 0
+age_count = 0
+table = list(csv.reader(file, delimiter=';'))
+
+for index, row in enumerate(table):
+    if index == 0:
+        continue
+
+    age = row[5]
+
+    if int(age) == 16:
+        age_count += 1
+
+    total_count += 1
+
+print()
+for i in range(11):
+    step = (10 - i) * 10
+    step_str = str(step).rjust(3, ' ')
+    col1_color = WHITE
+    col2_color = WHITE
+    if (age_count / total_count) * 100 >= step:
+        col1_color = BLUE
+    if ((total_count - age_count) / total_count) * 100 >= step:
+        col2_color = RED
+    print(f'{WHITE}{step_str}{col1_color}{" "}{WHITE}{" "}{col2_color}{" "}{END}')
+
+print(f'{BLUE} {END} Книги для возраста 16 лет')
+print(f'{RED} {END} Остальные')
